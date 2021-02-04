@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import PostItem from './PostItem';
 import PostForm from './PostForm';
 
-const Posts = ({ getPosts, post: { posts, loading } }) => {
+const Posts = ({ getPosts, post: { posts, loading },typeofuser }) => {
   useEffect(() => {
     getPosts();
   }, [getPosts]);
@@ -15,7 +15,7 @@ const Posts = ({ getPosts, post: { posts, loading } }) => {
   ) : (
     <Fragment>
       {console.log("i am in ",posts)}
-      <h1 className='large text-primary'>Posts</h1>
+      <h1 className='large text-primary'>Our Courses</h1>
       <p className='lead'>
         <i className='fas fa-user'></i> Welcome to the community
       </p>

@@ -25,14 +25,14 @@ const Dashboard = ({
       return (
 
         <Link to={'/posts'}>
-        <button className='btn btn-danger'>Courses</button>
+        <button style={{width:"70%",marginTop:"2%", height:"20%" , fontSize:"30px"}} className='btn btn-success'>Courses (Faculty access) Click here </button>
         </Link>
       )
     }
     else{
       return (
         <Link to={'/posts/student'}>
-        <button className='btn btn-danger'> Student button Courses</button>
+        <button style={{width:"70%",marginTop:"2%", height:"20%" , fontSize:"30px"}} className='btn btn-success'> Student (Student access)</button>
         </Link>)
     }
   }
@@ -54,9 +54,10 @@ const Dashboard = ({
         <Fragment>
           {' '}
           <DashboardActions />
+          {show(profile)}
           <Experience experience={profile.experience} />
           <Education education={profile.education} />
-        {show(profile)}
+       
 
           <div className='my-2'>
             <button
