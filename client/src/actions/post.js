@@ -33,7 +33,7 @@ export const addLike = (id) => async (dispatch) => {
     const res = await axios.put(`/api/posts/like/${id}`);
     dispatch({ type: UPDATE_LIKES, payload: { id, likes: res.data } });
   } catch (err) {
-    dispatch(setAlert('You have already liked this post', 'danger'));
+    dispatch(setAlert('You have already  been already enrolled', 'danger'));
     dispatch({
       type: POST_ERROR,
       payload: {
@@ -50,7 +50,7 @@ export const removeLike = (id) => async (dispatch) => {
     const res = await axios.put(`/api/posts/unlike/${id}`);
     dispatch({ type: UPDATE_LIKES, payload: { id, likes: res.data } });
   } catch (err) {
-    dispatch(setAlert('You have already remove your like', 'danger'));
+    dispatch(setAlert('You have already been unenrolled', 'danger'));
     dispatch({
       type: POST_ERROR,
       payload: {

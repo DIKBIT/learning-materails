@@ -33,14 +33,20 @@ const PostItem = ({
               onClick={(e) => addLike(_id)}
               type='button'
               className='btn btn-light'>
-              <i className='fas fa-thumbs-up'></i>{' '}
-              {likes.length > 0 && <span>{likes.length}</span>}
+              
+              Enroll yourself
             </button>
+            <button>
+            {likes.length > 0 && <span>{likes.length}</span>}
+
+            </button>
+
+
             <button
               onClick={(e) => removeLike(_id)}
               type='button'
               className='btn btn-light'>
-              <i className='fas fa-thumbs-down'></i>
+              Unenroll yourself
             </button>
             <Link to={`/posts/${_id}`} className='btn btn-primary'>
               Discussion{' '}

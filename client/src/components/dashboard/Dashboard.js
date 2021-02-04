@@ -19,6 +19,25 @@ const Dashboard = ({
   useEffect(() => {
     getCurrentProfile();
   }, [getCurrentProfile]);
+ 
+  let show=(profile)=>{
+    if( profile.status==="faculty"){
+      return (
+
+        <Link to={'/posts'}>
+        <button className='btn btn-danger'>Courses</button>
+        </Link>
+      )
+    }
+    else{
+      return (
+        <Link to={'/posts/student'}>
+        <button className='btn btn-danger'> Student button Courses</button>
+        </Link>)
+    }
+  }
+
+
   return loading && profile === null ? (
     <Spinner />
   ) : (
@@ -26,7 +45,9 @@ const Dashboard = ({
       <h1 className='large text-primary  '>Dashboard</h1>
         {getCurrentProfile}
       <p className='lead'>
+        {console.log("profile",profile)}
         <i className='fas fa-user'></i> Welcome {user && user.name} 
+          {}
       </p>
 
       {profile !== null ? (
@@ -35,18 +56,7 @@ const Dashboard = ({
           <DashboardActions />
           <Experience experience={profile.experience} />
           <Education education={profile.education} />
-         
-        {/* for teachers  */}
-
-          <Link to={'/posts'}>
-          <button className='btn btn-danger'>Courses</button>
-          </Link>
-          {/* for stundents */}
-
-
-          <Link to={'/posts/student'}>
-          <button className='btn btn-danger'> Student button Courses</button>
-          </Link>
+        {show(profile)}
 
           <div className='my-2'>
             <button
