@@ -12,7 +12,9 @@ const Dashboard = ({
   getCurrentProfile,
   auth: { user },
   profile: { profile, loading },
+  status,
   deleteAccount,
+
 }) => {
   useEffect(() => {
     getCurrentProfile();
@@ -21,9 +23,10 @@ const Dashboard = ({
     <Spinner />
   ) : (
     <Fragment>
-      <h1 className='large text-primary'>Dashboard</h1>
+      <h1 className='large text-primary  '>Dashboard</h1>
+        {getCurrentProfile}
       <p className='lead'>
-        <i className='fas fa-user'></i> Welcome {user && user.name}
+        <i className='fas fa-user'></i> Welcome {user && user.name} 
       </p>
 
       {profile !== null ? (
@@ -32,6 +35,19 @@ const Dashboard = ({
           <DashboardActions />
           <Experience experience={profile.experience} />
           <Education education={profile.education} />
+         
+        {/* for teachers  */}
+
+          <Link to={'/posts'}>
+          <button className='btn btn-danger'>Courses</button>
+          </Link>
+          {/* for stundents */}
+
+
+          <Link to={'/posts/student'}>
+          <button className='btn btn-danger'> Student button Courses</button>
+          </Link>
+
           <div className='my-2'>
             <button
               className='btn btn-danger'

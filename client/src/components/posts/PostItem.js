@@ -10,7 +10,7 @@ const PostItem = ({
   addLike,
   removeLike,
   deletePost,
-  post: { _id, text, name, avatar, user, likes, comments, date },
+  post: { _id, text, name, avatar, user, likes, comments, date,status },
   showActions,
 }) => {
   return (
