@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState ,useRef} from 'react';
 import { connect } from 'react-redux';
 // import axios from 'axios';
 import { Link, Redirect } from 'react-router-dom';
@@ -6,6 +6,11 @@ import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
 import PropTypes from 'prop-types';
 import Recaptcha from 'react-recaptcha';
+import ReCAPTCHA from "react-google-recaptcha";
+
+
+
+
 function Register({ setAlert, register, isAuthenticated }) {
   const [formData, setFormData] = useState({
     name: '',
@@ -14,6 +19,14 @@ function Register({ setAlert, register, isAuthenticated }) {
     password2: '',
   });
 let [captcha,setCaptcha]=useState(false);
+const reCaptcha = useRef();
+
+const [error, setError] = useState("");
+    const [token, setToken] = useState("");
+
+
+   
+
 
  const { name, email, password, password2 } = formData;
 
@@ -31,11 +44,17 @@ let verifyCallback=(response)=>{
     
     if (password !== password2) {
       setAlert('Passwords do not match', 'danger');
-    } else  if(!captcha){
-      return (  setAlert("please verify that you are human","danger"));
-     }
+    }
+    //else  if(!captcha){
+    //   return (  setAlert("please verify that you are human","danger"));
+    //  }
+    else  if (!token) {
+      setAlert("Yoou must verify the captcha","danger");
+      return;
+       }
     else {
-      register({ name, email, password });
+      console.log("token is ",token)
+      register({ name, email, password,token });
       // const newUser = {
       //   name,
       //   email,
@@ -63,7 +82,9 @@ let verifyCallback=(response)=>{
   }
   
   return (
+  
     <Fragment>
+      
       <h1 className='large text-primary'>Sign Up</h1>
       <p className='lead'>
         <i className='fas fa-user'></i> Create Your Account
@@ -115,10 +136,19 @@ let verifyCallback=(response)=>{
             // required
           />
         </div>
-        <Recaptcha
+        {/* <Recaptcha
     sitekey="6LdoGksaAAAAAASKU3RK9M8jwKIAXXg7BL1FpeeQ"
+    ref={e => recaptchaInstance = e}
     verifyCallback={verifyCallback}
+  /> */}
+
+<ReCAPTCHA
+         ref={reCaptcha}
+        sitekey="6LdoGksaAAAAAASKU3RK9M8jwKIAXXg7BL1FpeeQ"
+        onChange={token => setToken(token)}
+        onExpired={e => setToken("")}
   />
+  
         <input type='submit' className='btn btn-primary' value='Register' />
       </form>
       <p className='my-1'>

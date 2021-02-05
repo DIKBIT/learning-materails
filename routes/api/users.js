@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
+const axios = require("axios");
 
 const User = require('../../models/User');
 
@@ -21,14 +22,26 @@ const inputErrors = [
 ];
 
 router.post('/', inputErrors, async (req, res) => {
+  if (!req.body.token) {
+    return res.status(400).json({ error: "Token is missing" });
+}
+  
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
   const { name, email, password } = req.body;
+  
+  
   try {
-    // See if user exists
-    let user = await User.findOne({ email });
+    const googleVerifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=6LdoGksaAAAAACvYXqGJeo6SOu5tlkzW3S3YgtqU&response=${req.body.token}`;
+    const response = await axios.post(googleVerifyUrl);
+    const { success } = response.data;
+// recaptcha check 
+if(success){
+      // See if user exists
+
+  let user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
     }
@@ -65,6 +78,10 @@ router.post('/', inputErrors, async (req, res) => {
         res.json({ token });
       }
     );
+}else{
+  return res.status(400).json({ error: "Invalid Captcha. Try again." });
+}
+    
   } catch (err) {
     console.log(err.message);
     res.status(500).send('Server error');
