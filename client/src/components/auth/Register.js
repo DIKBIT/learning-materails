@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
 import PropTypes from 'prop-types';
-
+import Recaptcha from 'react-recaptcha';
 function Register({ setAlert, register, isAuthenticated }) {
   const [formData, setFormData] = useState({
     name: '',
@@ -13,17 +13,28 @@ function Register({ setAlert, register, isAuthenticated }) {
     password: '',
     password2: '',
   });
+let [captcha,setCaptcha]=useState(false);
 
-  const { name, email, password, password2 } = formData;
+ const { name, email, password, password2 } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+let verifyCallback=(response)=>{
+    if(response)
+    setCaptcha(true);
+}
+
+  
   const onSubmit = async (e) => {
     e.preventDefault();
+    
     if (password !== password2) {
       setAlert('Passwords do not match', 'danger');
-    } else {
+    } else  if(!captcha){
+      return (  setAlert("please verify that you are human","danger"));
+     }
+    else {
       register({ name, email, password });
       // const newUser = {
       //   name,
@@ -44,11 +55,13 @@ function Register({ setAlert, register, isAuthenticated }) {
       //   console.error(error.response.data);
       // }
     }
+   
   };
-
+ 
   if (isAuthenticated) {
     return <Redirect to={'/dashboard'} />;
   }
+  
   return (
     <Fragment>
       <h1 className='large text-primary'>Sign Up</h1>
@@ -102,11 +115,16 @@ function Register({ setAlert, register, isAuthenticated }) {
             // required
           />
         </div>
+        <Recaptcha
+    sitekey="6LdoGksaAAAAAASKU3RK9M8jwKIAXXg7BL1FpeeQ"
+    verifyCallback={verifyCallback}
+  />
         <input type='submit' className='btn btn-primary' value='Register' />
       </form>
       <p className='my-1'>
         Already have an account? <Link to='/login'>Sign In</Link>
       </p>
+   
     </Fragment>
   );
 }

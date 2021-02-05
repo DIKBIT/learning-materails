@@ -20,6 +20,7 @@
     "gravatar": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.16",
+    "react-recaptcha": "^2.3.10",
     "request": "^2.88.2",
     "uuid": "^8.1.0"
   },
