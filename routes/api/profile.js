@@ -71,7 +71,16 @@ router.post(
     if (website) profileFields.website = website;
     if (location) profileFields.location = location;
     if (bio) profileFields.bio = bio;
-    if (status) profileFields.status = status;
+    
+    if (status==="student"||status==="faculty"){
+      profileFields.status = status;
+    }
+    else{
+     return  res.status(503).send('Send correct status');
+
+    } 
+   
+    
     if (githubusername) profileFields.githubusername = githubusername;
     if (Array.isArray(skills)) {
       profileFields.skills = skills;
@@ -189,7 +198,7 @@ router.put(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
+    
     const {
       title,
       company,
@@ -200,7 +209,8 @@ router.put(
       description,
     } = req.body;
 
-    // Object with data user submitted
+    if(title==="student"|| title==="faculty"){
+        // Object with data user submitted
     const newExp = {
       title,
       company,
@@ -220,6 +230,11 @@ router.put(
       console.error(error.message);
       res.status(500).send('Server Error');
     }
+    }
+   else{
+     res.status(501).send('not valid status');
+   }
+    
   }
 );
 

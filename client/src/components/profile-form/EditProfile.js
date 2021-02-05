@@ -80,7 +80,6 @@ const EditProfile = ({
         <div className='form-group'>
           <select name='status' value={status} onChange={(e) => onChange(e)}>
             <option value='0'>* Select Professional Status</option>
-            <option value=''>Type of User</option>
             <option value='faculty'>Faculty</option>
             <option value='student'>Student</option>
           </select>
