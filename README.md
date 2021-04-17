@@ -1,19 +1,11 @@
-# DevConnect!
+#Full stack website for teachers and students!
 
 ## This project is based on a MERN stack udemy corse.
 
-_Course Link_
-_[MERN Stack Front To Back: Full Stack React, Redux & Node.js](https://www.udemy.com/course/mern-stack-front-to-back)_
 
-#### By Dusty McCord
 
-[Demo Site](https://devconnect-react.herokuapp.com/)
+[Demo Site](https://glacial-crag-59415.herokuapp.com/)
 
-## Breif
-
-This project is a simple social network for developers. It uses express to create an API backend and MongoDB altas as the noSQL provider.
-
-React and Redux are used along with Json web tokens for authentication.
 
 ## Install This Poject
 
