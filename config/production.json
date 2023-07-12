@@ -1,6 +1,6 @@
 {
   "mongoURI": "mongodb+srv://naman123:naman123@cluster0.uk7kr.mongodb.net/<dbname>?retryWrites=true&w=majority",
-  "jwtSecret": "secret",
+  "jwtSecret": "yT$5P1zx7#Kw9s@!cH@dN3&mRbF",
   "githubClientId": "0a706cbbfd81d57dabe6",
   "githubSecret": "0785a547a44136d5e5cb345a6a6693c44b576fa0"
 }

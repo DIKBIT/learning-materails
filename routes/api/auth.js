@@ -60,7 +60,8 @@ router.post('/', inputErrors, async (req, res) => {
 
     jwt.sign(
       payload,
-      config.get('jwtSecret'),
+      
+      'yT$5P1zx7#Kw9s@!cH@dN3&mRbF',
       { expiresIn: 3600000 },
       (err, token) => {
         if (err) throw err;
