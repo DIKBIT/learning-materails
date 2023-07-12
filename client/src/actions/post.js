@@ -20,8 +20,8 @@ export const getPosts = () => async (dispatch) => {
     dispatch({
       type: POST_ERROR,
       payload: {
-        msg: err.response.statusText,
-        status: err.response.status,
+        msg: err?.response?.statusText,
+        status: err?.response?.status,
       },
     });
   }
