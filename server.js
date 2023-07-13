@@ -4,13 +4,17 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const fileRoutes = require('./routes/api/file-upload-routes')
 const app = express(); 
+const cors = require('cors');
 
 // Connect Database;
 connectDB();
 
 // Init Middleware
 //app.use(express.json({ extended: false }));
+app.use(cors());
+
 app.use(bodyParser.json())
+
 // Define Routes
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));

@@ -1,10 +1,13 @@
-import React, { Fragment, useState, useCallback, useEffect } from "react";
+import React, { Fragment, useState, useCallback, useEffect, Button } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { addPost } from "../../actions/post";
 import { useDropzone } from "react-dropzone";
 import Dropzone from 'react-dropzone';
+import axios from 'axios';
+import { saveAs } from 'file-saver'
 
+import FileUploadScreen from './FileUploadScreen';
   const FileUpload = ({setFileToBeSent, handleSubmit}) => {
     
   
@@ -46,7 +49,7 @@ import Dropzone from 'react-dropzone';
     console.log("fuck")
     try {
       const formData = new FormData();
-      formData.append('file', selectedFile);
+      formData.append('file')
       setFileToBeSent(formData);
       formData.append('type', "save");
 
@@ -57,7 +60,7 @@ import Dropzone from 'react-dropzone';
       //     'Content-Type': 'multipart/form-data',
       //   },
       // });
-      console.log("formadata ", formData,   "========", selectedFile)
+      console.log("formadata ", formData,   "========")
       console.log('File uploaded successfully!');
     } catch (error) {
       console.error('Error uploading file:', error);
@@ -74,8 +77,8 @@ import Dropzone from 'react-dropzone';
   return (
   
       <div>
-      <Dropzone onDrop={handleFileSelect} accept=".pdf,.doc,.docx">
-        {({ getRootProps, getInputProps }) => (
+      <Dropzone  accept=".pdf,.doc,.docx">
+        {/* {({ getRootProps, getInputProps }) => (
           <div {...getRootProps()}>
             <input {...getInputProps()} />
             {selectedFile ? (
@@ -84,11 +87,11 @@ import Dropzone from 'react-dropzone';
               <div>Drag and drop files here or click to select files</div>
             )}
           </div>
-        )}
+        )} */}
       </Dropzone>
-      {selectedFile && (
+      {/* {selectedFile && (
         <button onClick={handleFileUpload}>Upload File</button>
-      )}
+      )} */}
     </div>
 
   
@@ -101,14 +104,15 @@ const PostForm = ({ addPost }) => {
   const [singleFile, setSingleFile] = useState('');
   const [multipleFiles, setMultipleFiles] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
+  const [singleFiles, setSingleFiles] = useState([]);
 
   const handleFileSelect = (files) => {
     setSelectedFile(files[0]);
   };
 
-  const SingleFileChange = (e) =>{
+  const SingleFileChange = async (e) =>{
     setSingleFile(e.target.files[0]);
-    
+  
   }
 
   const MultipleFileChange=(e)=>{
@@ -118,16 +122,74 @@ const PostForm = ({ addPost }) => {
   const handleSubmit = (formData)=>{
     addPost(formData);
   }
+  const apiUrl = 'http://localhost:3000/api/';
 
-  const uploadSingleFile = async()=>{
-    console.log(singleFile);
+ const singleFileUpload = async (data, options) => {
+    try {
+        await axios.post(apiUrl + 'singleFile', data, options);
+    } catch (error) {
+        throw error;
+    }
+}
+useEffect(() => {
+  getSingleFileslist();
+}, []);
 
+const getSingleFiles = async () => {
+  try {
+          const {data} = await axios.get(apiUrl + 'getSingleFiles');
+          return data;
+  } catch (error) {
+      throw error;
   }
+}
+const getSingleFileslist = async () => {
+  try {
+      const fileslist = await getSingleFiles();
+      setSingleFiles(fileslist);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+  const uploadSingleFile = async () => {
+    const formData = new FormData();
+    formData.append('file', singleFile);
+    await singleFileUpload(formData);
+    //props.getsingle();
+
+}
+
+
+//   const uploadSingleFile = async(file)=>{
+//     console.log(singleFile);
+  
+//     const config = {
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     };
+// try{
+//   console.log("file")
+//   const res = await axios.post(`/api/singleFile`, {file}, config);
+// console.log("res is ", res);
+
+// }catch(e){
+// console.log("error is ", e);
+// }
+
+//   }
 
   const uploadMultipleFiles = async()=>{
     console.log(multipleFiles);
 
+
   }
+  const downloadImage = (imageUrl) => {
+    saveAs(imageUrl, 'image.jpg') // Put your image url here.
+  }
+
   return (
     <Fragment>
       <div className="bg-primary p">
@@ -154,12 +216,28 @@ const PostForm = ({ addPost }) => {
         <input type="submit" className="btn btn-dark my-1" value="Submit" />
       </form>
 
+      {/* <FileUploadScreen getsingle={() => getSingleFileslist()} /> */}
+      <div className="row">
+                {singleFiles.map((file, index) => 
+                  <div className="col-6">
+                    <div >
+                      <img src={`http://localhost:8000/${file.filePath}`} style={{height: 150, width: 150}}  alt="img"/>
+                      <button onClick={()=>{
+                        downloadImage(`http://localhost:8000/${file.filePath}`)
+                      }}>Download!</button>
+
+                      </div>
+                  </div>
+                )}
+             </div>
+
+
       <div className="bg-primary p">
         <h3>Upload your study materials (Single or Multiple Files)</h3>
         <div>
           <label>Select Single File</label>
           <input type="file" onChange={(e)=> SingleFileChange(e)}></input>
-          <button type="button" onClick={()=>uploadSingleFile()}>Upload</button>
+          <button type="button" onClick={()=>uploadSingleFile()}>Upload12211</button>
         </div>
 
 
