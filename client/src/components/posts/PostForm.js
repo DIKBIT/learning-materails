@@ -3,10 +3,17 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { addPost } from "../../actions/post";
 import { useDropzone } from "react-dropzone";
+import Dropzone from 'react-dropzone';
 
-export const FileUpload = ({ setFileToBeSent }) => {
+  const FileUpload = ({setFileToBeSent, handleSubmit}) => {
+    const [selectedFile, setSelectedFile] = useState(null);
+  
+    const handleFileSelect = (files) => {
+      setSelectedFile(files[0]);
+    };
+  
+
   const [fileName, setFileName] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null);
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
     acceptedFiles.forEach((file) => {
@@ -30,28 +37,70 @@ export const FileUpload = ({ setFileToBeSent }) => {
     console.log(acceptedFiles);
     console.log(acceptedFiles[0].name);
     setFileName(acceptedFiles?.[0]?.name);
+    
     // here uyou have to set the file using setFileToBeSent this function
     //setFileToBeSent()
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
+  const handleFileUpload = async () => {
+    console.log("fuck")
+    try {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      setFileToBeSent(formData);
+      formData.append('type', "save");
+
+      handleSubmit(formData)
+     //await addPost(selectedFile);
+      // await axios.post('/api/upload', formData, {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data',
+      //   },
+      // });
+      console.log("formadata ", formData,   "========", selectedFile)
+      console.log('File uploaded successfully!');
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  };
+
+
+
+
+
   return (
-    <div {...getRootProps()} className="dropzone">
-      <input {...getInputProps()} />
-      {isDragActive ? (
-        <p>Drop the files here ...</p>
-      ) : (
-        <p>Drag 'n' drop files here, or click to select files</p>
+  
+      <div>
+      <Dropzone onDrop={handleFileSelect} accept=".pdf,.doc,.docx">
+        {({ getRootProps, getInputProps }) => (
+          <div {...getRootProps()}>
+            <input {...getInputProps()} />
+            {selectedFile ? (
+              <div>Selected File: {selectedFile.name}</div>
+            ) : (
+              <div>Drag and drop files here or click to select files</div>
+            )}
+          </div>
+        )}
+      </Dropzone>
+      {selectedFile && (
+        <button onClick={handleFileUpload}>Upload File</button>
       )}
-      <h3>{fileName}</h3>
     </div>
+
+  
   );
 };
 
 const PostForm = ({ addPost }) => {
   const [text, setText] = useState("");
   const [fileToBeSent, setFileToBeSent] = useState(null);
+
+  const handleSubmit = (formData)=>{
+    addPost(formData);
+  }
   return (
     <Fragment>
       <div className="bg-primary p">
@@ -60,7 +109,8 @@ const PostForm = ({ addPost }) => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          addPost({ text });
+          console.log("text is ", text);
+          addPost({ text , file: fileToBeSent});
           setText("");
         }}
         className="form my-1"
@@ -79,7 +129,10 @@ const PostForm = ({ addPost }) => {
 
       <div className="bg-primary p">
         <h3>Upload your study materials</h3>
-        <FileUpload setFileToBeSent={setFileToBeSent} />
+        <FileUpload setFileToBeSent={setFileToBeSent} 
+        handleSubmit={handleSubmit}
+        
+        />
       </div>
     </Fragment>
   );
