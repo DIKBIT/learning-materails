@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback } from "react";
+import React, { Fragment, useState, useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { addPost } from "../../actions/post";
@@ -6,11 +6,9 @@ import { useDropzone } from "react-dropzone";
 import Dropzone from 'react-dropzone';
 
   const FileUpload = ({setFileToBeSent, handleSubmit}) => {
-    const [selectedFile, setSelectedFile] = useState(null);
+    
   
-    const handleFileSelect = (files) => {
-      setSelectedFile(files[0]);
-    };
+    
   
 
   const [fileName, setFileName] = useState(null);
@@ -67,6 +65,9 @@ import Dropzone from 'react-dropzone';
   };
 
 
+  
+
+
 
 
 
@@ -97,9 +98,35 @@ import Dropzone from 'react-dropzone';
 const PostForm = ({ addPost }) => {
   const [text, setText] = useState("");
   const [fileToBeSent, setFileToBeSent] = useState(null);
+  const [singleFile, setSingleFile] = useState('');
+  const [multipleFiles, setMultipleFiles] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileSelect = (files) => {
+    setSelectedFile(files[0]);
+  };
+
+  const SingleFileChange = (e) =>{
+    setSingleFile(e.target.files[0]);
+    
+  }
+
+  const MultipleFileChange=(e)=>{
+    setMultipleFiles(e.target.files);
+  }
 
   const handleSubmit = (formData)=>{
     addPost(formData);
+  }
+
+  const uploadSingleFile = async()=>{
+    console.log(singleFile);
+
+  }
+
+  const uploadMultipleFiles = async()=>{
+    console.log(multipleFiles);
+
   }
   return (
     <Fragment>
@@ -128,11 +155,23 @@ const PostForm = ({ addPost }) => {
       </form>
 
       <div className="bg-primary p">
-        <h3>Upload your study materials</h3>
-        <FileUpload setFileToBeSent={setFileToBeSent} 
+        <h3>Upload your study materials (Single or Multiple Files)</h3>
+        <div>
+          <label>Select Single File</label>
+          <input type="file" onChange={(e)=> SingleFileChange(e)}></input>
+          <button type="button" onClick={()=>uploadSingleFile()}>Upload</button>
+        </div>
+
+
+        <div>
+          <label>Select Multiple Files</label>
+          <input type="file" onChange={(e)=>MultipleFileChange(e)} multiple></input>
+          <button type="button" onClick={()=> uploadMultipleFiles()}>Upload</button>
+        </div>
+        {/* <FileUpload setFileToBeSent={setFileToBeSent} 
         handleSubmit={handleSubmit}
         
-        />
+        /> */}
       </div>
     </Fragment>
   );
