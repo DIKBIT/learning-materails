@@ -78,6 +78,7 @@ export const deletePost = (id) => async (dispatch) => {
 
 // Add Post
 export const addPost = (formData) => async (dispatch) => {
+  
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -92,7 +93,7 @@ export const addPost = (formData) => async (dispatch) => {
     console.log('error', err);
     dispatch({
       type: POST_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
+      payload: { msg: err?.response?.statusText, status: err?.response?.status },
     });
   }
 };
