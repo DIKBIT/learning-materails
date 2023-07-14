@@ -5,11 +5,15 @@ const MultipleFile = require('../models/multiplefile');
 const singleFileUpload = async (req, res, next) => {
     console.log("i am at request")
     try{
+        console.log("pure req", req.body)
         const file = new SingleFile({
             fileName: req.file.originalname,
             filePath: req.file.path,
             fileType: req.file.mimetype,
-            fileSize: fileSizeFormatter(req.file.size, 2) // 0.00
+            fileSize: fileSizeFormatter(req.file.size, 2) ,// 0.00
+            category: req.body?.category,
+            grade: req.body?.grade,
+            text: req.body?.text
         });
         await file.save();
         res.status(201).send('File Uploaded Successfully');
@@ -42,8 +46,20 @@ const multipleFileUpload = async (req, res, next) => {
 
 const getallSingleFiles = async (req, res, next) => {
     try{
-        const files = await SingleFile.find();
-        res.status(200).send(files);
+        //const files = await SingleFile.find({category: c});
+        
+        SingleFile.find({ category: "english" , grade: "1" }, (error, products) => {
+            if (error) {
+              console.error('Error retrieving products:', error);
+              res.status(500).json({ error: 'Error retrieving products' });
+            } else {
+                console.log("produtcs are", products)
+             // res.json(products); // Return the products matching the category as JSON
+              res.status(200).send(products);
+
+            }
+          });
+          //res.status(200).send(files);
     }catch(error) {
         res.status(400).send(error.message);
     }
