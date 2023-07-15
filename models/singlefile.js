@@ -18,6 +18,18 @@ const singleFileSchema = new Schema({
     fileSize: {
         type: String,
         required: true
+    },
+    category: {
+        type: String,
+        required: true
+    },
+    grade: {
+        type: String,
+        required: true
+    },
+    text: {
+        type: String,
+        required: true
     }
 }, {timestamps: true});
 
