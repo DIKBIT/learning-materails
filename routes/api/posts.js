@@ -1,18 +1,35 @@
 const express = require('express');
 const router = express.Router();
-const { check, validationResult } = require('express-validator');
+const { check, validationResult,body } = require('express-validator');
 const auth = require('../../middleware/auth');
 const Post = require('../../models/Post');
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+const {upload} = require('../../helpers/filehelper');
 
 // @route   POST api/posts
 // @Desc    Create a post
 // @access  private
+const fileSizeFormatter = (bytes, decimal) => {
+  if(bytes === 0){
+      return '0 Bytes';
+  }
+  const dm = decimal || 2;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'YB', 'ZB'];
+  const index = Math.floor(Math.log(bytes) / Math.log(1000));
+  return parseFloat((bytes / Math.pow(1000, index)).toFixed(dm)) + ' ' + sizes[index];
+
+}
 
 router.post(
   '/',
-  [auth, [check('text', 'Text is required ').not().isEmpty()]],
+  [auth, [body().custom((value, { req }) => {
+    if (!req.is('multipart/form-data')) {
+      throw new Error('Invalid request payload type. Expected Form Data.');
+    }
+    return true;
+  })]],
+  upload.single('file'),
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -20,16 +37,32 @@ router.post(
     }
 
     try {
-      const user = await User.findById(req.user.id).select('-password');
+      console.log("user is ", req.user.id)
 
-      const newPost = new Post({
-        text: req.body.text,
+      const user = await User.findById(req.user.id).select('-password');
+      console.log("user is ",  req.file.originalname,)
+      const file = new Post({
         name: user.name,
         avatar: user.avatar,
         user: req.user.id,
-      });
+        fileName: req.file.originalname,
+        filePath: req.file.path,
+        fileType: req.file.mimetype,
+        fileSize: fileSizeFormatter(req.file.size, 2) ,// 0.00
+        category: req.body?.category,
+        grade: req.body?.grade,
+        text: req.body?.text
+    });
+    const post = await file.save();
 
-      const post = await newPost.save();
+    console.log("after  fiel")
+      // const newPost = new Post({
+      //   text: req.body.text,
+      //   name: user.name,
+      //   avatar: user.avatar,
+      //   user: req.user.id,
+      // });
+      //res.status(201).send('File Uploaded Successfully');
 
       res.json(post);
     } catch (error) {

@@ -60,7 +60,7 @@ const PostForm = ({ addPost }) => {
     formData.append("file", singleFile);
     formData.append("text", text);
     console.log("ormdata is ", formData);
-
+    addPost(formData);
     if (formData) {
       await singleFileUpload(formData);
     } else {
@@ -79,7 +79,7 @@ const PostForm = ({ addPost }) => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            addPost({ text });
+            // addPost({ text });
             setText("");
            setGrade("");
            setCategory("");
@@ -120,7 +120,7 @@ const PostForm = ({ addPost }) => {
           <input type="submit" className="btn btn-dark my-1" value="Submit" />
         </form>
         <div className="row">
-        {singleFiles.map((file, index) => 
+        {/* {singleFiles.map((file, index) => 
                   <div className="col-6">
                     <div >
                       <img src={`http://localhost:8000/${file.filePath}`} style={{height: 150, width: 150}}  alt="img"/>
@@ -130,7 +130,7 @@ const PostForm = ({ addPost }) => {
 
                       </div>
                   </div>
-                )}
+                )} */}
         </div>
       </Fragment>
     );
