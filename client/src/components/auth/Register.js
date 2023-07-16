@@ -141,13 +141,13 @@ let verifyCallback=(response)=>{
     ref={e => recaptchaInstance = e}
     verifyCallback={verifyCallback}
   /> */}
-
+{/* 
 <ReCAPTCHA
          ref={reCaptcha}
         sitekey="6LdoGksaAAAAAASKU3RK9M8jwKIAXXg7BL1FpeeQ"
         onChange={token => setToken(token)}
         onExpired={e => setToken("")}
-  />
+  /> */}
   
         <input type='submit' className='btn btn-primary' value='Register' />
       </form>
