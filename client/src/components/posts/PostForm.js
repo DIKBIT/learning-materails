@@ -25,27 +25,6 @@ const PostForm = ({ addPost }) => {
   };
 
 
-  useEffect(() => {
-    getSingleFileslist();
-  }, []);
-
-  const getSingleFiles = async () => {
-    try {
-      const { data } = await axios.get(apiUrl + "getSingleFiles");
-      return data;
-    } catch (error) {
-      throw error;
-    }
-  };
-  const getSingleFileslist = async () => {
-    try {
-      const fileslist = await getSingleFiles();
-      setSingleFiles(fileslist);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const uploadSingleFile = async (text) => {
     const formData = new FormData();
     formData.append("grade", grade);
