@@ -48,6 +48,10 @@ let verifyCallback=(response)=>{
     //else  if(!captcha){
     //   return (  setAlert("please verify that you are human","danger"));
     //  }
+    else  if (!token) {
+      setAlert("Yoou must verify the captcha","danger");
+      return;
+       }
     else {
       console.log("token is ",token)
       register({ name, email, password,token });
@@ -137,13 +141,13 @@ let verifyCallback=(response)=>{
     ref={e => recaptchaInstance = e}
     verifyCallback={verifyCallback}
   /> */}
-{/* 
+
 <ReCAPTCHA
          ref={reCaptcha}
-        sitekey="6LdoGksaAAAAAASKU3RK9M8jwKIAXXg7BL1FpeeQ"
+        sitekey="6LfaZSonAAAAANosAbrCrNZJeo88Y9VtDGGX61wZ"
         onChange={token => setToken(token)}
         onExpired={e => setToken("")}
-  /> */}
+  />
   
         <input type='submit' className='btn btn-primary' value='Register' />
       </form>
