@@ -4,15 +4,19 @@ import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import { addLike, removeLike, deletePost } from '../../actions/post';
+import { saveAs } from "file-saver";
 
 const PostItem = ({
   auth,
   addLike,
   removeLike,
   deletePost,
-  post: { _id, text, name, avatar, user, likes, comments, date,status },
+  post: { _id, text, name, avatar, user, likes, comments, date,status , category="", grade="",filePath=""},
   showActions,
 }) => {
+  const downloadImage = (imageUrl) => {
+    saveAs(imageUrl, "image.jpg"); // Put your image url here.
+  };
   return (
     <div className='post bg-white p-1 my-1'>
       <div>
@@ -64,6 +68,37 @@ const PostItem = ({
             )}
           </Fragment>
         )}
+        <div>
+          <h4>category</h4>
+          <button
+              type='button'
+              className='btn btn-light'>
+              {category}
+             
+            </button>
+        </div>
+
+        <div>
+          <h4>grade</h4>
+          <button
+              type='button'
+              className='btn btn-light'>
+              {grade}
+             
+            </button>
+        </div>
+        <div className="col-6">
+                 {
+                  filePath?  <div >
+                  <img src={`http://localhost:3000/${filePath}`} style={{height: 150, width: 150}}  alt="img"/>
+                  <button onClick={()=>{
+                    downloadImage(`http://localhost:3000/${filePath}`)
+                  }}>Download!</button>
+
+                  </div>:null
+                 }
+                  
+                  </div>
       </div>
     </div>
   );
