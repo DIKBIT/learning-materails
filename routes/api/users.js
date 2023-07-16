@@ -34,7 +34,7 @@ router.post('/', inputErrors, async (req, res) => {
   
   
   try {
-    const googleVerifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=6LdoGksaAAAAACvYXqGJeo6SOu5tlkzW3S3YgtqU&response=${req.body.token}`;
+    const googleVerifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=6LfaZSonAAAAAISg--Lt11XHjhpdxKnpXyRsps9W&response=${req.body.token}`;
     const response = await axios.post(googleVerifyUrl);
     const { success } = response.data;
 // recaptcha check 
