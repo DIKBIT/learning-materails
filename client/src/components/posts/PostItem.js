@@ -90,9 +90,9 @@ const PostItem = ({
         <div className="col-6">
                  {
                   filePath?  <div >
-                  <img src={`http://localhost:3000/${filePath}`} style={{height: 150, width: 150}}  alt="img"/>
+                  <img src={`https://na-front-end-deploy--golden-sunflower-87d18e.netlify.app/${filePath}`} style={{height: 150, width: 150}}  alt="img"/>
                   <button onClick={()=>{
-                    downloadImage(`http://localhost:3000/${filePath}`)
+                    downloadImage(`https://na-front-end-deploy--golden-sunflower-87d18e.netlify.app/${filePath}`)
                   }}>Download!</button>
 
                   </div>:null

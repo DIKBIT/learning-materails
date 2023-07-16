@@ -23,15 +23,8 @@ const PostForm = ({ addPost }) => {
   const singleFileChange = async (e) => {
     setSingleFile(e.target.files[0]);
   };
-  const apiUrl = "http://localhost:3000/api/";
 
-  const singleFileUpload = async (data, options) => {
-    try {
-      await axios.post(apiUrl + "singleFile", data, options);
-    } catch (error) {
-      throw error;
-    }
-  };
+
   useEffect(() => {
     getSingleFileslist();
   }, []);
@@ -61,11 +54,6 @@ const PostForm = ({ addPost }) => {
     formData.append("text", text);
     console.log("ormdata is ", formData);
     addPost(formData);
-    if (formData) {
-      await singleFileUpload(formData);
-    } else {
-      console.log("add files to upload  ");
-    }
     //props.getsingle();
   }
     const downloadImage = (imageUrl) => {
