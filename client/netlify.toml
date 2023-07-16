@@ -1,0 +1,3 @@
+[build]
+  command = "CI= npm run build"  # Replace "npm run build" with your build command
+  environment = { CI = "false" }
