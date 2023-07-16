@@ -48,10 +48,6 @@ let verifyCallback=(response)=>{
     //else  if(!captcha){
     //   return (  setAlert("please verify that you are human","danger"));
     //  }
-    else  if (!token) {
-      setAlert("Yoou must verify the captcha","danger");
-      return;
-       }
     else {
       console.log("token is ",token)
       register({ name, email, password,token });
