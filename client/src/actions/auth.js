@@ -11,6 +11,7 @@ import {
   CLEAR_PROFILE,
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
+axios.defaults.baseURL = 'https://edtech-backend-mstz.onrender.com';
 
 // Load User
 export const loadUser = () => async (dispatch) => {
