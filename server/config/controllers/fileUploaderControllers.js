@@ -1,6 +1,6 @@
 'use strict';
-const SingleFile = require('../models/singlefile');
-const MultipleFile = require('../models/multiplefile');
+const SingleFile = require('../../models/singlefile');
+const MultipleFile = require('../../models/multiplefile');
 
 const singleFileUpload = async (req, res, next) => {
     console.log("i am at request")
